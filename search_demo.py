@@ -16,14 +16,20 @@ def process(cont):
     source_list = document.xpath("//a")
     celeb_file = open("celeb_data.txt", 'a')
     movie_file = open("movie_data.txt", 'a')
-    celeb_file.write(key_word + "\n")
-    movie_file.write(key_word + "\n")
+    celeb = []
+    movie = []
     for s in source_list:
         link = s.attrib["href"]
         if "movie.douban.com/celebrity" in link:
-            celeb_file.write(link.split("/")[-2] + "\n")
+            celeb.append(link.split("/")[-2])
         elif "movie.douban.com/subject" in link:
-            movie_file.write(link.split("/")[-2] + "\n")
+            movie.append(link.split("/")[-2])
+    celeb = list(set(celeb))
+    movie = list(set(movie))
+    celeb.append(key_word)
+    movie.append(key_word)
+    celeb_file.write(str(celeb) + "\n")
+    movie_file.write(str(movie) + "\n")
 
 
 async def main(url):
@@ -34,6 +40,7 @@ async def main(url):
     content = await page.content()
     process(content)
     await page.close()
+    await browser.close()
 
 
 if __name__ == '__main__':
@@ -43,4 +50,3 @@ if __name__ == '__main__':
         asyncio.get_event_loop().run_until_complete(main(url))
     except Exception as e:
         print(e)
-

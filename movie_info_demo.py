@@ -2,7 +2,7 @@ from requests_html import HTMLSession
 
 s = HTMLSession()
 
-ID = "30220799"  # 冷门：6828945  热门：30220799
+ID = "25820460"  # 冷门：6828945  热门：30220799
 data = s.get("https://movie.douban.com/subject/" + ID + "/")
 info = data.html.find("div#info", first=True)
 info_text = info.text.split("\n")
