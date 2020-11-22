@@ -69,6 +69,8 @@ class DoubanAPI:
             info_dict["上映日期"] = []
         if "制片国家/地区" not in info_dict.keys():
             info_dict["制片国家/地区"] = []
+        if "语言" not in info_dict.keys():
+            info_dict["语言"] = []
         info_dict.update(rating_dict)
         return info_dict
 
@@ -78,6 +80,6 @@ class DoubanAPI:
 
 if __name__ == '__main__':
     D = DoubanAPI()
-    D.search(6828945)
+    D.search(4864908)
     print(D.info())
     print(D)
