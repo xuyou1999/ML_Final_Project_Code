@@ -6,7 +6,7 @@ if __name__ == '__main__':
                "rating", "rating_count", "rating_weight")
     df = pd.DataFrame(columns=columns)
     d = DoubanAPI()
-    for id in [4864908, 26607693, 26662193]:
+    for id in [4864908, 26607693, 26662193, 6828945]:
         d.search(id)
         info = d.info()
         print(info)
@@ -16,4 +16,4 @@ if __name__ == '__main__':
                 "rating_weight": [info["rating_weight"]]}
         new = pd.DataFrame(data, columns=columns)
         df = pd.concat([df, new], ignore_index=True)
-    print(df.head())
+    print(df["screenwriter"])

@@ -63,7 +63,12 @@ class DoubanAPI:
         weight_info = weight.text.split("\n")
         rating_weight = [weight_info[i] for i in [1, 4, 7, 10, 13]]
         rating_dict = {"rating": rating, "rating_count": rating_count, "rating_weight": rating_weight}
-
+        if "类型" not in info_dict.keys():
+            info_dict["类型"] = []
+        if "上映日期" not in info_dict.keys():
+            info_dict["上映日期"] = []
+        if "制片国家/地区" not in info_dict.keys():
+            info_dict["制片国家/地区"] = []
         info_dict.update(rating_dict)
         return info_dict
 
