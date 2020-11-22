@@ -15,7 +15,7 @@ class DoubanAPI:
     def info(self):
         data = self.data
         if not data:
-            raise Exception("Please search first!")
+            raise Exception("Please search for data first!")
         info = data.find("div#info", first=True)
         info_text = info.text.split("\n")
         info_list = [i.split(": ") for i in info_text]
