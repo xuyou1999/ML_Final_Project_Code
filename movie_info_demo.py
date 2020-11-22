@@ -2,7 +2,7 @@ from requests_html import HTMLSession
 
 s = HTMLSession()
 
-ID = "25820460"  # 冷门：6828945  热门：30220799
+ID = "6828945"  # 冷门：6828945  热门：30220799
 data = s.get("https://movie.douban.com/subject/" + ID + "/")
 info = data.html.find("div#info", first=True)
 info_text = info.text.split("\n")
@@ -60,7 +60,7 @@ print("Actor URL:", actor_url)
 rate = data.html.find("div.rating_self", first=True)
 rating_info = rate.text.split("\n")
 rating = rating_info[0]
-rating_count = rating_info[1]
+rating_count = rating_info[1][:-3]
 print("Rating:", rating)
 print("Rating Counts:", rating_count)
 weight = data.html.find("div.ratings-on-weight", first=True)
