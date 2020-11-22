@@ -67,3 +67,5 @@ weight = data.html.find("div.ratings-on-weight", first=True)
 weight_info = weight.text.split("\n")
 rating_weight = [weight_info[i] for i in [1, 4, 7, 10, 13]]
 print("Rating Weights (5, 4, 3, 2, 1 star[s]):", rating_weight)
+
+print(info_dict)
