@@ -2,11 +2,12 @@ from requests_html import HTMLSession
 
 s = HTMLSession()
 
-ID = "6828945"  # 冷门：6828945  热门：30220799
+ID = "4828296"  # 冷门：6828945  热门：30220799  非电影：4828296
 data = s.get("https://movie.douban.com/subject/" + ID + "/")
 info = data.html.find("div#info", first=True)
 info_text = info.text.split("\n")
 info_list = [i.split(": ") for i in info_text]
+print(info_list)
 info_dict = {i[0]: i[1].split(" / ") for i in info_list}
 attr_list = info.find("span.attrs")
 
