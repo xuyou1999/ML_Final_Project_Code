@@ -8,7 +8,7 @@ ip_pool = [
     '101.86.86.101:8118',
 ]
 proxy_pool = [ip + 'http://' for ip in ip_pool]
-start = 4600  # 每次加60
+start = 4660  # 每次加60
 proxy_num = 0
 proxy = {'http': "http://112.111.217.36:9999"}
 while True:
