@@ -10,7 +10,7 @@ ip_pool = [
 proxy_pool = [ip + 'http://' for ip in ip_pool]
 start = 4660  # 每次加60
 proxy_num = 0
-proxy = {'http': "http://112.111.217.36:9999"}
+proxy = {'http': "http://113.120.143.234:13456"}
 while True:
     url = "https://movie.douban.com/j/new_search_subjects?sort=U&range=0,10&tags=电影&start=" + str(start) + \
           "&year_range=2010,2019"

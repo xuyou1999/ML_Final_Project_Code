@@ -1,5 +1,5 @@
 from requests_html import HTMLSession
-
+from fake_useragent import UserAgent
 
 class DoubanAPI:
     def __init__(self):
@@ -10,8 +10,22 @@ class DoubanAPI:
     def search(self, id):
         self.id = str(id)
         url = "https://movie.douban.com/subject/" + str(id)
-        self.data = self.session.get(url).html
-        self.session.close()
+        ua = UserAgent().random
+        header = {"User-Agent": ua,
+                  "Cookie": 'll="108296"; bid=nWq4k-KjCqs; __gads=ID=8960cdccb618879f-22096d33d9c400a2:T=1605890801:S'
+                            '=ALNI_MZs12Yi9DWxDKkzX6j2HOHI7MFs0g; '
+                            '_vwo_uuid_v2=D7E2B615C39991E6F355FAF8BC49E04B5|1628d95d7afc0e4bde5178d8d491828e; ct=y; '
+                            'push_noty_num=0; push_doumail_num=0; __utmv=30149280.22703; '
+                            '__utmz=30149280.1605968719.9.3.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=('
+                            'not%20provided); dbcl2="227039831:0I/Ve4j29Z0"; ck=MUEL; '
+                            'frodotk="984a7362e065950fc8df5a28a130bf2d"; ap_v=0,'
+                            '6.0; __utma=30149280.337909721.1605890754.1606637790.1606649834.13; '
+                            '__utmb=30149280.0.10.1606649834; __utmc=30149280',
+                  }
+        proxies = {
+            "http": "http://49.71.141.225:13456"
+        }
+        self.data = self.session.post(url, headers=header, proxies=proxies).html
 
     def info(self):
         data = self.data
@@ -51,7 +65,6 @@ class DoubanAPI:
             actor_attr = actor.find("a")
             actor_href = [a.attrs["href"] for a in actor_attr]
             actor_id = [h.split("/")[-2] for h in actor_href]
-            print(actor_id)
         except KeyError:
             actor_id = []
         id_dict = {"director_id": director_id, "screenwriter_id": screenwriter_id, "actor_id": actor_id}
@@ -76,12 +89,8 @@ class DoubanAPI:
         info_dict.update(rating_dict)
         return info_dict
 
-    def __str__(self):
-        return self.id
-
 
 if __name__ == '__main__':
     D = DoubanAPI()
     D.search(30220799)
     print(D.info())
-    print(D)
