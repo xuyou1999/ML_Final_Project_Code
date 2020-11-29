@@ -8,11 +8,11 @@ ip_pool = [
     '101.86.86.101:8118',
 ]
 proxy_pool = [ip + 'http://' for ip in ip_pool]
-start = 4040  # 每次加60
+start = 4480  # 每次加60
 proxy_num = 0
 proxy = {'http': "http://112.111.217.36:9999"}
 while True:
-    url = "https://movie.douban.com/j/new_search_subjects?sort=U&range=0,10&tags=&start=" + str(start) + \
+    url = "https://movie.douban.com/j/new_search_subjects?sort=U&range=0,10&tags=电影&start=" + str(start) + \
           "&year_range=2010,2019"
     headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                              "Chrome/60.0.3100.0 Safari/537.36"}

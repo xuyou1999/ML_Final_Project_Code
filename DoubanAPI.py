@@ -50,6 +50,7 @@ class DoubanAPI:
             actor_attr = actor.find("a")
             actor_href = [a.attrs["href"] for a in actor_attr]
             actor_id = [h.split("/")[-2] for h in actor_href]
+            print(actor_id)
         except KeyError:
             actor_id = []
         id_dict = {"director_id": director_id, "screenwriter_id": screenwriter_id, "actor_id": actor_id}
@@ -80,6 +81,6 @@ class DoubanAPI:
 
 if __name__ == '__main__':
     D = DoubanAPI()
-    D.search(4864908)
+    D.search(30220799)
     print(D.info())
     print(D)
