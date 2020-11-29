@@ -10,9 +10,13 @@ try:
 except IndexError:
     print("invalid movie!")
 info = d.info()
-param = (id, str(info["director_id"]), str(info["screenwriter_id"]), str(info["actor_id"]), str(info["类型"]),
-         str(info["制片国家/地区"]), str(info["语言"]), str(info["上映日期"]), info["rating"], info["rating_count"],
-         str(info["rating_weight"]))
+for key in info.keys():
+    value = info[key]
+    if isinstance(value, list):
+        info[key] = ",".join(value)
+param = (id, info["director_id"], info["screenwriter_id"], info["actor_id"], info["类型"],
+         info["制片国家/地区"], info["语言"], info["上映日期"], info["rating"], info["rating_count"],
+         info["rating_weight"])
 query = "INSERT INTO `movie` VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 cur.execute(query, param)
 conn.commit()
