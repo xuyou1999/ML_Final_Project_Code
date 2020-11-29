@@ -11,6 +11,7 @@ class DoubanAPI:
         self.id = str(id)
         url = "https://movie.douban.com/subject/" + str(id)
         self.data = self.session.get(url).html
+        self.session.close()
 
     def info(self):
         data = self.data
