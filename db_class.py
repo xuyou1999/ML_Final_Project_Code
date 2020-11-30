@@ -79,7 +79,7 @@ class MyDb:
         except Exception as e:
             print(e)
         out = outpath if outpath else "data.csv"
-        with open(out, mode='w', encoding='utf-8') as f:
+        with open(out, mode='w', encoding='utf-8', newline='') as f:
             write = csv.writer(f, dialect='excel')
             for item in data:
                 write.writerow(item)
