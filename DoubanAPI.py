@@ -1,42 +1,47 @@
+import json
+import time
 from requests_html import HTMLSession
 from fake_useragent import UserAgent
 
+
 class DoubanAPI:
+
     def __init__(self):
         self.session = HTMLSession()
         self.id = None
         self.data = None
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.session.close()
+
     def search(self, id):
         self.id = str(id)
         url = "https://movie.douban.com/subject/" + str(id)
         ua = UserAgent().random
-        header = {"User-Agent": ua,
-                  "Cookie": 'll="108296"; bid=nWq4k-KjCqs; __gads=ID=8960cdccb618879f-22096d33d9c400a2:T=1605890801:S'
-                            '=ALNI_MZs12Yi9DWxDKkzX6j2HOHI7MFs0g; '
-                            '_vwo_uuid_v2=D7E2B615C39991E6F355FAF8BC49E04B5|1628d95d7afc0e4bde5178d8d491828e; ct=y; '
-                            'push_noty_num=0; push_doumail_num=0; __utmv=30149280.22703; '
-                            '__utmz=30149280.1605968719.9.3.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=('
-                            'not%20provided); dbcl2="227039831:0I/Ve4j29Z0"; ck=MUEL; '
-                            'frodotk="984a7362e065950fc8df5a28a130bf2d"; ap_v=0,'
-                            '6.0; __utma=30149280.337909721.1605890754.1606637790.1606649834.13; '
-                            '__utmb=30149280.0.10.1606649834; __utmc=30149280',
-                  }
+        header = {"User-Agent": ua}
         proxies = {
             "http": "http://49.71.141.225:13456"
         }
-        self.data = self.session.post(url, headers=header, proxies=proxies).html
+        try:
+            self.data = self.session.get(url, headers=header).html
+        except Exception as e:
+            print(e)
 
     def info(self):
         data = self.data
         if not data:
             raise Exception("Please search for data first!")
+
+        # handle error in other program
         info = data.find("div#info", first=True)
         info_text = info.text.split("\n")
         info_list = [i.split(": ") for i in info_text]
         info_dict = {i[0]: i[1].split(" / ") for i in info_list}
-
         attr_list = info.find("span.attrs")
+
         director_index = 0
         screenwriter_index = 1
         actor_index = 2
@@ -89,8 +94,33 @@ class DoubanAPI:
         info_dict.update(rating_dict)
         return info_dict
 
+    def find_id(self, is_sorted=False, tags="电影", start=0, year_range=(2010, 2019), outpath=None, max_num=100):
+        s = "U" if not is_sorted else "T"
+        r = str(year_range[0]) + "," + str(year_range[1])
+        out = outpath if outpath else "movie_id.txt"
+        file = open(out, 'a')
+        session = self.session
+        headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+                                 "Chrome/60.0.3100.0 Safari/537.36"}
+        while start < max_num:
+            url = "https://movie.douban.com/j/new_search_subjects?sort=" + s + "&range=0,10&tags=" + tags + \
+                  "&start=" + str(start) + "&year_range=" + r
+            start += 20
+            try:
+                response = session.get(url, headers=headers)
+                data = json.loads(response.text)["data"]
+            except Exception as e:
+                print(e)
+                continue
+            for movie in data:
+                id = movie["id"]
+                file.write(id + "\n")
+            time.sleep(3)  # simulate user behaviour
+        file.close()
+
 
 if __name__ == '__main__':
-    D = DoubanAPI()
-    D.search(30220799)
-    print(D.info())
+    with DoubanAPI() as D:
+        D.search(30220799)
+        print(D.info())
+        # D.find_id()
