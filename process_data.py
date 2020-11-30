@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import numpy as np
 import pandas as pd
 
@@ -15,3 +16,17 @@ writer_empty = pd.read_csv('./data/writer_empty.csv')
 wirter_pred_avg = pd.read_csv('./data/writer_pred_avg.csv')
 
 actor = pd.merge(actor_empty, actor_pred_avg)
+=======
+import pandas as pd
+
+f1 = pd.read_csv("./data/actor_pred_avg.csv", header=None, names=['id', 'actor_avg'])
+f2 = pd.read_csv("./data/actor_empty.csv", header=None, names=['id', 'actor_avg'])
+actor = pd.concat([f1, f2])
+
+f1 = pd.read_csv("./data/director_pred_avg.csv", header=None, names=['id', 'director_avg'])
+f2 = pd.read_csv("./data/director_empty.csv", header=None, names=['id', 'director_avg'])
+director = pd.concat([f1, f2])
+
+a = pd.merge(actor, director, on="id")
+print(a)
+>>>>>>> 612db60a36d5f30cd5685fc313d21b473cd6a03d
