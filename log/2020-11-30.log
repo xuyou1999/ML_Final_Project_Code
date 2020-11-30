@@ -1,0 +1,1 @@
+2020-11-30 22:02:34 ERROR No common columns to perform merge on. Merge options: left_on=None, right_on=None, left_index=False, right_index=False
