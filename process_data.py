@@ -21,6 +21,7 @@ language = pd.concat((language_empty, language_pred_avg))
 region = pd.concat((region_empty, region_pred_avg))
 writer = pd.concat((writer_empty, writer_pred_avg))
 
+# merge all attributes(predictors)
 attr_lst = [actor, director, genre, language, region, writer]
 movie = pd.merge(actor, director)
 for attr in range(len(attr_lst)):
@@ -35,10 +36,15 @@ for i in range(len(origin_movie)):
     for j in range(len(date_lst)):
         date_lst[j] = int(date_lst[j][:4])
     date = min(date_lst)
-    origin_movie['date'][i] = date
+    origin_movie["date"][i] = date
 
+# merge date(predictor)
 movie_date = origin_movie[['movie_id', 'date']]
 movie = pd.merge(movie, movie_date, on='movie_id')
+
+# merge ratings(label)
+movie_rating = origin_movie[["movie_id", "movie_rating"]]
+movie = pd.merge(movie, movie_rating, on="movie_id")
 
 test_i = []
 train_i = []
