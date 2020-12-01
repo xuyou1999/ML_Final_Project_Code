@@ -19,13 +19,14 @@ class MyDb:
         self.conn = pymysql.connect(host=self.host, user=self.user, password=self.passwd, port=self.port,
                                     database=self.db_name, charset=self.charset, autocommit=self.autocommit)
         self.cur = self.conn.cursor(Cursor)
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.cur.close()
         self.conn.close()
         if exc_tb or exc_type or exc_val:
             print(exc_type, exc_type, exc_val)
-        return True  # do not throw exception if error occurs in with clause
+        return True  # do not throw exception if exception occurs in with clause
 
     def connect_to_db(self, db_name):
         self.db_name = db_name

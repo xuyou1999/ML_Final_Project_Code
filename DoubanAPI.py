@@ -16,6 +16,9 @@ class DoubanAPI:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.session.close()
+        if exc_tb or exc_type or exc_val:
+            print(exc_type, exc_type, exc_val)
+        return True  # do not throw exception if exception occurs in with clause
 
     def search(self, id):
         self.id = str(id)
