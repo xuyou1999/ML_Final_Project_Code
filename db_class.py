@@ -16,27 +16,23 @@ class MyDb:
         self.cur = None
 
     def __enter__(self):  # usage: with MyDb(param) as db
-        try:
-            self.conn = pymysql.connect(host=self.host, user=self.user, password=self.passwd, port=self.port,
-                                        database=self.db_name, charset=self.charset, autocommit=self.autocommit)
-            self.cur = self.conn.cursor(Cursor)
-        except Exception as e:
-            print(e)
-        return self
+        self.conn = pymysql.connect(host=self.host, user=self.user, password=self.passwd, port=self.port,
+                                    database=self.db_name, charset=self.charset, autocommit=self.autocommit)
+        self.cur = self.conn.cursor(Cursor)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.cur.close()
         self.conn.close()
+        if exc_tb or exc_type or exc_val:
+            print(exc_type, exc_type, exc_val)
+        return True  # do not throw exception if error occurs in with clause
 
     def connect_to_db(self, db_name):
         self.db_name = db_name
         return self.__enter__()
 
     def set_cursor(self, cursor_type=Cursor):
-        try:
-            self.cur = self.conn.cursor(cursor_type)
-        except Exception as e:
-            print(e)
+        self.cur = self.conn.cursor(cursor_type)
 
     def execute(self, query, param=None, commit=None):
         commit = self.autocommit if commit is None else commit
@@ -59,22 +55,13 @@ class MyDb:
             self.conn.commit()
 
     def fetchone(self):  # For details, visit https://blog.csdn.net/qq_44421796/article/details/105643697
-        try:
-            return self.cur.fetchone()
-        except Exception as e:
-            print(e)
+        return self.cur.fetchone()
 
     def fetchall(self):
-        try:
-            return self.cur.fetchall()
-        except Exception as e:
-            print(e)
+        return self.cur.fetchall()
 
     def fetchmany(self):
-        try:
-            return self.cur.fetchmany()
-        except Exception as e:
-            print(e)
+        return self.cur.fetchmany()
 
     def execute_to_csv(self, query, outpath=None, param=None):
         self.execute(query, param)
