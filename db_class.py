@@ -44,6 +44,7 @@ class MyDb:
             self.cur.execute(query, param)
         except Exception as e:
             print(e)
+            self.conn.rollback()
         if commit and not self.autocommit:
             self.conn.commit()
 
@@ -53,6 +54,7 @@ class MyDb:
             self.cur.executemany(query, param)
         except Exception as e:
             print(e)
+            self.conn.rollback()
         if commit and not self.autocommit:
             self.conn.commit()
 
