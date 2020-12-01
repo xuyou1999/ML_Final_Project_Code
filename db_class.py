@@ -38,7 +38,8 @@ class MyDb:
         except Exception as e:
             print(e)
 
-    def execute(self, query, param=None, commit=True):
+    def execute(self, query, param=None, commit=None):
+        commit = self.autocommit if commit is None else commit
         try:
             self.cur.execute(query, param)
         except Exception as e:
@@ -46,7 +47,8 @@ class MyDb:
         if commit and not self.autocommit:
             self.conn.commit()
 
-    def executemany(self, query, param=None, commit=True):
+    def executemany(self, query, param=None, commit=None):
+        commit = self.autocommit if commit is None else commit
         try:
             self.cur.executemany(query, param)
         except Exception as e:
@@ -73,12 +75,9 @@ class MyDb:
             print(e)
 
     def execute_to_csv(self, query, outpath=None, param=None):
-        try:
-            self.execute(query, param)
-            data = self.fetchall()
-        except Exception as e:
-            print(e)
-        out = outpath if outpath else "data.csv"
+        self.execute(query, param)
+        data = self.fetchall()
+        out = outpath if outpath else str(hash(query)) + ".csv"
         with open(out, mode='w', encoding='utf-8', newline='') as f:
             write = csv.writer(f, dialect='excel')
             for item in data:

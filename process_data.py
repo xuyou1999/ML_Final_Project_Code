@@ -1,5 +1,3 @@
-
-import numpy as np
 import pandas as pd
 import random
 
@@ -31,7 +29,7 @@ for attr in range(len(attr_lst)):
 
 
 origin_movie = pd.read_csv('./data/movie.csv')
-for i in range(origin_movie.shape[0]):
+for i in range(len(origin_movie)):
     date_str = origin_movie['date'][i]
     date_lst = date_str.strip('"').split(',')
     for j in range(len(date_lst)):
@@ -44,7 +42,8 @@ movie = pd.merge(movie, movie_date, on='movie_id')
 
 test_i = []
 train_i = []
-for i in range(movie.shape[0]):
+for i in range(len(origin_movie)):
+    random.seed(i)  # make sure to get same data on every program run
     if random.random() >= 0.8:
         test_i.append(i)
     else:
