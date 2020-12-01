@@ -37,6 +37,9 @@ for i in range(len(origin_movie)):
         date_lst[j] = int(date_lst[j][:4])
     date = min(date_lst)
     origin_movie["date"][i] = date
+# no warning: for i in range(len(origin_movie)): origin_movie.iloc[i, 1:2] = min([int(d[:4]) for d in [date for date
+# in origin_movie.iloc[i, 1:2].str.strip('"').str.split(',')[0]]])
+
 
 # merge date(predictor)
 movie_date = origin_movie[['movie_id', 'date']]
@@ -49,7 +52,7 @@ movie = pd.merge(movie, movie_rating, on="movie_id")
 test_i = []
 train_i = []
 for i in range(len(origin_movie)):
-    random.seed(i)  # make sure to get same data on every program run
+    random.seed(i)  # make sure to get same data on every program execution
     if random.random() >= 0.8:
         test_i.append(i)
     else:
