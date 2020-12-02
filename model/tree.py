@@ -4,8 +4,10 @@ from sklearn import tree
 from sklearn.ensemble import BaggingRegressor
 from sklearn.metrics import mean_squared_error
 
-cwd = os.getcwd()
-os.popen("cd " + cwd)
+abs_path = os.path.abspath(__file__)
+path = os.path.dirname(abs_path)
+os.chdir(path)
+
 train = pd.read_csv("../data/train_data.csv")
 test = pd.read_csv("../data/test_data.csv")
 X_train, y_train, X_test, y_test = train.iloc[:, 1:-1], train.iloc[:, -1], test.iloc[:, 1:-1], test.iloc[:, -1]
