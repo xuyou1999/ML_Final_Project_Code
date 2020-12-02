@@ -1,8 +1,10 @@
 import pandas as pd
-import numpy as np
+import os
 from sklearn import tree
 from sklearn.metrics import mean_squared_error
 
+cwd = os.getcwd()
+os.popen("cd " + cwd)
 train = pd.read_csv("../data/train_data.csv")
 test = pd.read_csv("../data/test_data.csv")
 X_train, y_train, X_test, y_test = train.iloc[:, 1:-1], train.iloc[:, -1], test.iloc[:, 1:-1], test.iloc[:, -1]
