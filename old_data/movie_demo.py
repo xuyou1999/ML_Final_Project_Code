@@ -1,5 +1,10 @@
 import json
 from requests import Session
+import os
+
+abs_path = os.path.abspath(__file__)
+path = os.path.dirname(abs_path)
+os.chdir(path)
 
 s = Session()
 ip_pool = [
