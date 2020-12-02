@@ -15,7 +15,7 @@ conn = pymysql.connect(host="localhost", user="root", password="", port=3306, da
 cur = conn.cursor()
 
 # extract and insert data into database
-for id in id_list[4693:]:
+for id in id_list[4987:]:
     try:
         d = DoubanAPI()
         time.sleep(3)
