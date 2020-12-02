@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn import tree
+from sklearn.ensemble import BaggingRegressor
 from sklearn.metrics import mean_squared_error
 
 train = pd.read_csv("../data/train_data.csv")
