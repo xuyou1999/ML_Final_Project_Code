@@ -11,6 +11,4 @@ extract_data.py: extract detailed movie data from Douban, and insert into databa
 
 load_data.py: fetch data from database, and save to csv files
 
-The number of lines in "..._pred_avg.csv" and "..._empty.csv" should add up to 3506 (number of movies/sample size).
-
-for each csv data file, we manually add title to them
+The number of lines in "..._pred_avg.csv" and "..._empty.csv" should add up to the number of movies/sample size.
