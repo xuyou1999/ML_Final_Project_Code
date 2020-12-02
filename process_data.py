@@ -1,7 +1,7 @@
 import pandas as pd
 import random
 
-# load csv files, already add headers manually
+# load csv files
 actor_empty = pd.read_csv('./data/actor_empty.csv')
 actor_pred_avg = pd.read_csv('./data/actor_pred_avg.csv')
 director_empty = pd.read_csv('./data/director_empty.csv')

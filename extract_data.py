@@ -20,6 +20,27 @@ def create_db(db):
             db.execute(sql_item)
 
 
+def filter_data(db):
+    '''
+    filter out movie data in database where there is no date for that movie
+    :param db: MyDb object
+    '''
+    query = "DELETE FROM `actor_movie` WHERE movie_ID IN (SELECT ID FROM `movie` WHERE date = '')"
+    db.execute(query)
+    query = "DELETE FROM `director_movie` WHERE movie_ID IN (SELECT ID FROM `movie` WHERE date = '')"
+    db.execute(query)
+    query = "DELETE FROM `writer_movie` WHERE movie_ID IN (SELECT ID FROM `movie` WHERE date = '')"
+    db.execute(query)
+    query = "DELETE FROM `genre_movie` WHERE movie_ID IN (SELECT ID FROM `movie` WHERE date = '')"
+    db.execute(query)
+    query = "DELETE FROM `language_movie` WHERE movie_ID IN (SELECT ID FROM `movie` WHERE date = '')"
+    db.execute(query)
+    query = "DELETE FROM `region_movie` WHERE movie_ID IN (SELECT ID FROM `movie` WHERE date = '')"
+    db.execute(query)
+    query = "DELETE FROM `movie` WHERE date = ''"
+    db.execute(query)
+
+
 def extract_data():
     # load id data
     file = open("movie.txt", "r")
@@ -128,6 +149,9 @@ def extract_data():
             # if success
             logger.info("Success in id: " + str(id))
         logger.info("Finish insertion")
+
+        time.sleep(3000)  # wait until insertion finish successfully
+        filter_data(db)
 
 
 # please use valid proxy pool for DoubanAPI (modify in DoubanAPI.py)

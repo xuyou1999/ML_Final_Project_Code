@@ -38,7 +38,7 @@ class MyDb:
     def execute(self, query, param=None, commit=None):
         commit = self.autocommit if commit is None else commit
         try:
-            self.cur.execute(query, param)
+            return self.cur.execute(query, param)
         except Exception as e:
             print(e)
             self.conn.rollback()
@@ -48,7 +48,7 @@ class MyDb:
     def executemany(self, query, param=None, commit=None):
         commit = self.autocommit if commit is None else commit
         try:
-            self.cur.executemany(query, param)
+            return self.cur.executemany(query, param)
         except Exception as e:
             print(e)
             self.conn.rollback()
@@ -64,14 +64,17 @@ class MyDb:
     def fetchmany(self):
         return self.cur.fetchmany()
 
-    def execute_to_csv(self, query, outpath=None, param=None):
+    def execute_to_csv(self, query, param=None, outpath=None, header=None):
         self.execute(query, param)
         data = self.fetchall()
         out = outpath if outpath else str(hash(query)) + ".csv"
-        with open(out, mode='w', encoding='utf-8', newline='') as f:
-            write = csv.writer(f, dialect='excel')
-            for item in data:
-                write.writerow(item)
+        f = open(out, mode='a', encoding='utf-8', newline='')
+        write = csv.writer(f, dialect='excel')
+        if header:
+            write.writerow(header)
+        for item in data:
+            write.writerow(item)
+        f.close()
 
 
 if __name__ == '__main__':
@@ -81,11 +84,12 @@ if __name__ == '__main__':
         db.execute(query, (1, 1, 1, 1, 1))
         query = "select * from `movie` where id = 1"
         db.execute(query)
-        result = db.fetchone()
+        result = db.fetchall()
         print("After Insertion:", result)
         query = "delete from `movie` where id = 1"
-        db.execute(query)
+        row_count = db.execute(query)
+        print("Affected %d row(s)" % row_count)
         query = "select * from `movie` where id = 1"
         db.execute(query)
         result = db.fetchone()
-        print("After Delete:", result)
+        print("After Deletion:", result)
