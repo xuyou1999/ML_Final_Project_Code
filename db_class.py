@@ -28,11 +28,16 @@ class MyDb:
             print(exc_type, exc_type, exc_val)
         return True  # do not throw exception if exception occurs in with clause
 
+    def connect(self):
+        return self.__enter__()
+
     def connect_to_db(self, db_name):
         self.db_name = db_name
         return self.__enter__()
 
-    def set_cursor(self, cursor_type=Cursor):
+    def set_cursor_type(self, cursor_type=Cursor):
+        if not self.cur:
+            raise Exception("Please connect first!")
         self.cur = self.conn.cursor(cursor_type)
 
     def execute(self, query, param=None, commit=None):
@@ -68,7 +73,7 @@ class MyDb:
         self.execute(query, param)
         data = self.fetchall()
         out = outpath if outpath else str(hash(query)) + ".csv"
-        f = open(out, mode='a', encoding='utf-8', newline='')
+        f = open(out, mode='w', encoding='utf-8', newline='')
         write = csv.writer(f, dialect='excel')
         if header:
             write.writerow(header)
@@ -80,6 +85,7 @@ class MyDb:
 if __name__ == '__main__':
     with MyDb("localhost", "root", "", 3306) as db:
         db.connect_to_db("movie_info")
+        db.set_cursor_type(DictCursor)
         query = "insert into `movie` values(%s, %s, %s, %s, %s)"
         db.execute(query, (1, 1, 1, 1, 1))
         query = "select * from `movie` where id = 1"

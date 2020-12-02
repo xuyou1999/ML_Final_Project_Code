@@ -1,5 +1,6 @@
 from db_class import MyDb
 from logger_class import Logger
+from extract_data import filter_data
 
 
 def get_movie(db):
@@ -97,6 +98,7 @@ def region_info(db):
 if __name__ == '__main__':
     logger = Logger("file").getLogger()
     with MyDb("localhost", "root", "", 3306, "movie_info") as db:
+        filter_data(db)
         try:
             get_movie(db)
             actor_info(db)
