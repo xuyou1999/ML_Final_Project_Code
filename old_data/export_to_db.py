@@ -1,10 +1,14 @@
+import time
+
 import pymysql
+
 from DoubanAPI import DoubanAPI
 from logger_class import Logger
-import time
+
 
 # load movie id from file
 file = open("movie.txt", "r")
+
 id_list = file.readlines()
 for i in range(len(id_list)):
     id_list[i] = id_list[i].strip("\n")
@@ -15,7 +19,7 @@ conn = pymysql.connect(host="localhost", user="root", password="", port=3306, da
 cur = conn.cursor()
 
 # extract and insert data into database
-for id in id_list[4987:]:
+for id in id_list[8164:]:
     try:
         d = DoubanAPI()
         time.sleep(3)
