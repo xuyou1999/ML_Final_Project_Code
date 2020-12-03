@@ -49,10 +49,9 @@ def extract_data():
         id_list[i] = id_list[i].strip("\n")
 
     # setup
-    d = DoubanAPI()
     logger = Logger("file").getLogger()
 
-    with MyDb("localhost", "root", "", 3306) as db:
+    with MyDb("localhost", "root", "", 3306) as db, DoubanAPI() as D:
         # create database "movie_info", comment this block if database already created
         try:
             create_db(db)
@@ -68,7 +67,7 @@ def extract_data():
             time.sleep(3)  # simulate user behaviour
             # extraction
             try:
-                d.search(id)
+                D.search(id)
                 logger.info("Search success for id: " + str(id))
             except Exception as e:  # error caused by ip ban
                 logger.error(e)

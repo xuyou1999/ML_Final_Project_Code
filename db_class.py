@@ -1,6 +1,7 @@
+import csv
+
 import pymysql
 from pymysql.cursors import *
-import csv
 
 
 class MyDb:
