@@ -1,4 +1,5 @@
 from matplotlib import pyplot as plt
+import numpy as np
 import pandas as pd
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.metrics import mean_squared_error
@@ -19,14 +20,21 @@ for k in k_list:
     y_pred = knn.predict(X_validate)
     score = knn.score(X_validate, y_validate)
     score_list.append(score)
-    # print("Test set R^2:{:.2f}".format(knn.score(X_validate, y_validate)))
     MSE = mean_squared_error(y_validate, y_pred)
     mse_list.append(MSE)
     print("MSE:", MSE)
 
-plt.plot(k_list, mse_list)
-plt.plot(k_list, score_list)
+min_i = np.array(mse_list).argmin()
+print("The best k is:", k_list[min_i])
+
 plt.title("mse-k curve")
 plt.ylabel("MSE")
 plt.xlabel("k value")
+plt.plot(k_list, mse_list)
+plt.show()
+
+plt.title("score-k curve")
+plt.ylabel("score")
+plt.xlabel("k value")
+plt.plot(k_list, score_list)
 plt.show()
