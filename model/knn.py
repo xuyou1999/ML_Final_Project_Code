@@ -14,7 +14,7 @@ k_list = [i for i in range(5, 20)]
 mse_list = []
 score_list = []
 for k in k_list:
-    knn = KNeighborsRegressor(k, weights="distance")
+    knn = KNeighborsRegressor(k, weights="distance")  # "distance" gives a better performance than "uniform"
     knn.fit(X_train, y_train)
     y_pred = knn.predict(X_validate)
     score = knn.score(X_validate, y_validate)
