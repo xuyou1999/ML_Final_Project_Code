@@ -43,8 +43,17 @@ print(opt_estimators) # 159
 '''
 
 # boosting
-model_grad_boost = GradientBoostingRegressor(loss='ls', random_state=1, n_estimators=100).fit(X_train, y_train)
-y_pred_grad_boost = model_grad_boost.predict(X_validate)
-error = mean_squared_error(y_validate, y_pred_grad_boost)
-print('Gradient boosting error:', error)
+opt_estimators = 1
+opt_error = 100
+for i in range(1, 200):
+    model_grad_boost = GradientBoostingRegressor(loss='ls', random_state=1, n_estimators=i).fit(X_train, y_train)
+    y_pred_grad_boost = model_grad_boost.predict(X_validate)
+    error = mean_squared_error(y_validate, y_pred_grad_boost)
+    if error < opt_error:
+        opt_error = error
+        opt_estimators = i
+    print('Gradient boosting error:', error)
+
+print(opt_error) # 0.0943017905460884
+print(opt_estimators) # 169
 
