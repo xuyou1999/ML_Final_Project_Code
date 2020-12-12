@@ -5,6 +5,7 @@ from sklearn import tree
 from sklearn.ensemble import BaggingRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import GradientBoostingRegressor
 
 
 abs_path = os.path.abspath(__file__)
@@ -24,7 +25,7 @@ model_tree = model_tree.fit(X_train, y_train)
 y_pred_tree = model_tree.predict(X_test)
 print('Tree error', mean_squared_error(y_test, y_pred_tree))
 
-
+'''
 # Random forest by setting the number of trees using val set, max_features is by deault as sqrt
 opt_estimators = 1
 opt_error = 100
@@ -39,4 +40,11 @@ for i in range(1, 200):
 
 print(opt_error) # 0.09151789030831993
 print(opt_estimators) # 159
+'''
+
+# boosting
+model_grad_boost = GradientBoostingRegressor(loss='ls', random_state=1, n_estimators=100).fit(X_train, y_train)
+y_pred_grad_boost = model_grad_boost.predict(X_validate)
+error = mean_squared_error(y_validate, y_pred_grad_boost)
+print('Gradient boosting error:', error)
 
