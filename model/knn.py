@@ -90,3 +90,16 @@ test_score = knn.score(X_test, pred)
 print("Test MSE: %f" % test_MSE)
 print("Test Score: %f" % test_score)
 
+# plot
+pred.sort()
+truth = y_test.values
+truth.sort()
+N = [i for i in range(len(y_test))]
+plt.plot(N, pred, 'r')
+plt.plot(N, truth, 'b')
+plt.title("Model: KNN")
+plt.xlabel("movie")
+plt.ylabel("rating")
+plt.legend(("prediction", "ground truth"))
+plt.show()
+
