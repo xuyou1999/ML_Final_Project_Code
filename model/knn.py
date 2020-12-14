@@ -91,9 +91,10 @@ print("Test MSE: %f" % test_MSE)
 print("Test Score: %f" % test_score)
 
 # plot
+pred_arg = pred.argsort()
 pred.sort()
 truth = y_test.values
-truth.sort()
+truth = [truth[arg] for arg in pred_arg]
 N = [i for i in range(len(y_test))]
 plt.plot(N, pred, 'r')
 plt.plot(N, truth, 'b')
