@@ -97,7 +97,7 @@ truth = y_test.values
 truth = [truth[arg] for arg in pred_arg]
 N = [i for i in range(len(y_test))]
 plt.plot(N, pred, 'r')
-plt.plot(N, truth, 'b')
+plt.scatter(N, truth)
 plt.title("Model: KNN")
 plt.xlabel("movie")
 plt.ylabel("rating")
