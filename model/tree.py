@@ -40,9 +40,9 @@ def find_random_forest(X_train, y_train, X_validate, y_validate):
         if error < opt_error:
             opt_error = error
             opt_estimators = i
-        print('Random forest error:', error)
-    print(opt_error)  # 0.09151789030831993
-    print(opt_estimators)  # 159
+    #     print('Random forest error:', error)
+    # print(opt_error)  # 0.09151789030831993
+    # print(opt_estimators)  # 159
     return random_forest(X_train, y_train, opt_estimators)
 
 
@@ -64,9 +64,9 @@ def find_boosting(X_train, y_train, X_validate, y_validate):
         if error < opt_error:
             opt_error = error
             opt_estimators = i
-        print('Gradient boosting error:', error)
-    print(opt_error)  # 0.0943017905460884
-    print(opt_estimators)  # 169
+    #     print('Gradient boosting error:', error)
+    # print(opt_error)  # 0.0943017905460884
+    # print(opt_estimators)  # 169
     return boosting(X_train, y_train, opt_estimators)
 
 
@@ -81,11 +81,57 @@ def mse(model, X_test, y_test):
     error = mean_squared_error(y_test, pred)
     return error
 
+def method(name, X_train, y_train, X_validate=None, y_validate=None):
+    if name == 'tree':
+        return tree_reg(X_train, y_train)
+    elif name == 'random forest':
+        return find_random_forest(X_train, y_train, X_validate, y_validate)
+    elif name == 'boosting':
+        return find_boosting(X_train, y_train, X_validate, y_validate)
+
+def feature_selection(method_name, current_model, X_train, y_train, X_validate, y_validate):
+    if X_train.shape[1] == 1:
+        return current_model, X_train, X_validate
+    origin_model = current_model
+    opt_model = origin_model
+    origin_mse = mse(origin_model, X_validate, y_validate)
+    opt_mse = origin_mse
+    for i in range(X_train.shape[1]):
+        X_train_i = X_train.iloc[:, X_train.columns != X_train.columns[i]]
+        X_validate_i = X_validate.iloc[:, X_validate.columns != X_validate.columns[i]]
+        new_model = method(method_name, X_train_i, y_train, X_validate_i, y_validate)
+        new_mse = mse(new_model, X_validate_i, y_validate)
+        # print('new_mse:', new_mse)
+        if new_mse < opt_mse:
+            opt_mse = new_mse
+            opt_model = new_model
+            new_X_train = X_train_i
+            new_X_validate = X_validate_i
+    
+    if opt_mse == origin_mse:
+        return origin_model, X_train, X_validate
+    else:
+        return feature_selection(method_name, opt_model, new_X_train, y_train, new_X_validate, y_validate)
 
 def main(X_train, y_train, X_validate, y_validate, X_test, y_test):
-    print('tree mse:', mse(tree_reg(X_train, y_train), X_test, y_test))
-    print('random_forest mse:', mse(random_forest(X_train, y_train, 159), X_test, y_test))
-    print('boosting mse:', mse(boosting(X_train, y_train, 169), X_test, y_test))
+    # tree
+    origin_tree = tree_reg(X_train, y_train)
+    print('tree mse:', mse(origin_tree, X_test, y_test))
+    select_tree, new_X_train_tree, new_X_validate_tree = feature_selection('tree', origin_tree, X_train, y_train, X_validate, y_validate)
+    print('tree mse after feature selection:', mse(select_tree, X_test.loc[:, new_X_train_tree.columns], y_test))
+    print('new features:', new_X_train_tree.columns)
+    # random forest
+    origin_random_forest = random_forest(X_train, y_train, 159)
+    print('random forest mse:', mse(origin_random_forest, X_test, y_test))
+    select_random_forest, new_X_train_random_forest, new_X_validate_random_forest = feature_selection('random forest', origin_random_forest, X_train, y_train, X_validate, y_validate)
+    print('random forest after feature selection:', mse(select_random_forest, X_test.loc[:, new_X_train_random_forest.columns], y_test))
+    print('new_features:', new_X_train_random_forest.columns)
+    # boosting
+    origin_boosting = boosting(X_train, y_train, 169)
+    print('boosting mse:', mse(origin_boosting, X_test, y_test))
+    select_boosting, new_X_train_boosting, new_X_validate_boosting = feature_selection('boosting', origin_boosting, X_train, y_train, X_validate, y_validate)
+    print('boosting after feature selection:', mse(select_boosting, X_test.loc[:, new_X_train_boosting.columns], y_test))
+    print('new_features:', new_X_train_boosting.columns)
 
 
 main(X_train, y_train, X_validate, y_validate, X_test, y_test)
