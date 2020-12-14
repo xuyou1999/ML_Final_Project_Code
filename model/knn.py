@@ -101,5 +101,6 @@ plt.title("Model: KNN")
 plt.xlabel("movie")
 plt.ylabel("rating")
 plt.legend(("prediction", "ground truth"))
+plt.savefig("knn.png")
 plt.show()
 
