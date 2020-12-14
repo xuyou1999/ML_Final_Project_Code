@@ -6,6 +6,7 @@ from sklearn.ensemble import BaggingRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import GradientBoostingRegressor
+from matplotlib import pyplot as plt
 
 abs_path = os.path.abspath(__file__)
 path = os.path.dirname(abs_path)
@@ -14,6 +15,7 @@ os.chdir(path)
 train = pd.read_csv("../data/train_data.csv")
 validate = pd.read_csv("../data/validate_data.csv")
 test = pd.read_csv("../data/test_data.csv")
+test.sort_values('movie_rating', inplace=True)
 
 X_train, y_train, X_validate, y_validate, X_test, y_test = train.iloc[:, 1:-1], train.iloc[:, -1], \
                                                            validate.iloc[:, 1:-1], validate.iloc[:, -1], test.iloc[:,
@@ -113,7 +115,7 @@ def feature_selection(method_name, current_model, X_train, y_train, X_validate, 
     else:
         return feature_selection(method_name, opt_model, new_X_train, y_train, new_X_validate, y_validate)
 
-def main(X_train, y_train, X_validate, y_validate, X_test, y_test):
+def operate_selection(X_train, y_train, X_validate, y_validate, X_test, y_test):
     # tree
     origin_tree = tree_reg(X_train, y_train)
     print('tree mse:', mse(origin_tree, X_test, y_test))
@@ -149,6 +151,26 @@ new_features: Index(['actor_rating', 'director_rating', 'genre_rating', 'region_
        'writer_rating', 'date'],
       dtype='object')
     '''
+
+def main(X_train, y_train, X_validate, y_validate, X_test, y_test):
+    X_train_tree = X_train.iloc[:, X_train.columns != 'genre_rating']
+    X_validate_tree = X_validate.iloc[:, X_validate.columns != 'genre_rating']
+    X_test_tree = X_test.iloc[:, X_test.columns != 'genre_rating']
+
+    tree_model = tree_reg(X_train_tree, y_train)
+    tree_pred = tree_model.predict(X_test_tree)
+    print('tree mse:', mse(tree_model, X_test_tree, y_test))
+
+    N = [i for i in range(len(y_test))]
+    plt.plot(N, y_test, 'r')
+    plt.scatter(N, tree_pred, s=1)
+    plt.title("Model: Tree")
+    plt.xlabel("movie")
+    plt.ylabel("rating")
+    plt.legend(("ground truth", "prediction"))
+    plt.savefig("tree.png")
+    plt.show() 
+
 
 
 main(X_train, y_train, X_validate, y_validate, X_test, y_test)
