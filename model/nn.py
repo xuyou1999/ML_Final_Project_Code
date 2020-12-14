@@ -45,10 +45,10 @@ class Net(nn.Module):
 net = Net(7, 5, 1)
 print(net)
 
-optimizer = torch.optim.SGD(net.parameters(), lr=0.1)
+optimizer = torch.optim.SGD(net.parameters(), lr=0.0001)
 loss_func = torch.nn.MSELoss()
 
-for t in range(500):
+for t in range(50000):
     prediction = net(X_train_tensor)
     loss = loss_func(prediction, y_train_tensor)
 
