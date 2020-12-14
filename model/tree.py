@@ -132,6 +132,23 @@ def main(X_train, y_train, X_validate, y_validate, X_test, y_test):
     select_boosting, new_X_train_boosting, new_X_validate_boosting = feature_selection('boosting', origin_boosting, X_train, y_train, X_validate, y_validate)
     print('boosting after feature selection:', mse(select_boosting, X_test.loc[:, new_X_train_boosting.columns], y_test))
     print('new_features:', new_X_train_boosting.columns)
+    '''
+    tree mse: 0.18073499662845582
+tree mse after feature selection: 0.17862440997977072
+new features: Index(['actor_rating', 'director_rating', 'language_rating', 'region_rating',
+       'writer_rating', 'date'],
+      dtype='object')
+random forest mse: 0.10051179087685266
+random forest after feature selection: 0.10107273203267343
+new_features: Index(['actor_rating', 'director_rating', 'genre_rating', 'region_rating',
+       'writer_rating', 'date'],
+      dtype='object')
+boosting mse: 0.10242035066395254
+boosting after feature selection: 0.10307454709516191
+new_features: Index(['actor_rating', 'director_rating', 'genre_rating', 'region_rating',
+       'writer_rating', 'date'],
+      dtype='object')
+    '''
 
 
 main(X_train, y_train, X_validate, y_validate, X_test, y_test)
