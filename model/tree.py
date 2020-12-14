@@ -171,6 +171,32 @@ def main(X_train, y_train, X_validate, y_validate, X_test, y_test):
     plt.savefig("tree.png")
     plt.show() 
 
+    random_forest_model = random_forest(X_train, y_train, 159)
+    random_forest_pred = random_forest_model.predict(X_test)
+    print('random forest mse:', mse(random_forest_model, X_test, y_test))
+    
+    N = [i for i in range(len(y_test))]
+    plt.plot(N, y_test, 'r')
+    plt.scatter(N, random_forest_pred, s=1)
+    plt.title("Model: Random forest")
+    plt.xlabel("movie")
+    plt.ylabel("rating")
+    plt.legend(("ground truth", "prediction"))
+    plt.savefig("random_forest.png")
+    plt.show() 
 
+    boosting_model = boosting(X_train, y_train, 169)
+    boosting_pred = boosting_model.predict(X_test)
+    print('boosting error:', mse(boosting_model, X_test, y_test))
+
+    N = [i for i in range(len(y_test))]
+    plt.plot(N, y_test, 'r')
+    plt.scatter(N, boosting_pred, s=1)
+    plt.title("Model: Boosting")
+    plt.xlabel("movie")
+    plt.ylabel("rating")
+    plt.legend(("ground truth", "prediction"))
+    plt.savefig("boosting.png")
+    plt.show() 
 
 main(X_train, y_train, X_validate, y_validate, X_test, y_test)
