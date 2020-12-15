@@ -54,7 +54,7 @@ def find_random_forest(X_train, y_train, X_validate, y_validate):
     plt.xlabel("Number of esitimators")
     plt.ylabel("MSE")
     plt.savefig("random_forest_n_est.png")
-    plt.show() 
+    plt.show()
 
     return random_forest(X_train, y_train, opt_estimators)
 
@@ -89,7 +89,7 @@ def find_boosting(X_train, y_train, X_validate, y_validate):
     plt.xlabel("Number of esitimators")
     plt.ylabel("MSE")
     plt.savefig("boosting_n_est.png")
-    plt.show() 
+    plt.show()
 
     return boosting(X_train, y_train, opt_estimators)
 
@@ -105,6 +105,7 @@ def mse(model, X_test, y_test):
     error = mean_squared_error(y_test, pred)
     return error
 
+
 def method(name, X_train, y_train, X_validate=None, y_validate=None):
     if name == 'tree':
         return tree_reg(X_train, y_train)
@@ -112,6 +113,7 @@ def method(name, X_train, y_train, X_validate=None, y_validate=None):
         return find_random_forest(X_train, y_train, X_validate, y_validate)
     elif name == 'boosting':
         return find_boosting(X_train, y_train, X_validate, y_validate)
+
 
 def feature_selection(method_name, current_model, X_train, y_train, X_validate, y_validate):
     if X_train.shape[1] == 1:
@@ -131,30 +133,40 @@ def feature_selection(method_name, current_model, X_train, y_train, X_validate, 
             opt_model = new_model
             new_X_train = X_train_i
             new_X_validate = X_validate_i
-    
+
     if opt_mse == origin_mse:
         return origin_model, X_train, X_validate
     else:
         return feature_selection(method_name, opt_model, new_X_train, y_train, new_X_validate, y_validate)
 
+
 def operate_selection(X_train, y_train, X_validate, y_validate, X_test, y_test):
     # tree
     origin_tree = tree_reg(X_train, y_train)
     print('tree mse:', mse(origin_tree, X_test, y_test))
-    select_tree, new_X_train_tree, new_X_validate_tree = feature_selection('tree', origin_tree, X_train, y_train, X_validate, y_validate)
+    select_tree, new_X_train_tree, new_X_validate_tree = feature_selection('tree', origin_tree, X_train, y_train,
+                                                                           X_validate, y_validate)
     print('tree mse after feature selection:', mse(select_tree, X_test.loc[:, new_X_train_tree.columns], y_test))
     print('new features:', new_X_train_tree.columns)
     # random forest
     origin_random_forest = random_forest(X_train, y_train, 159)
     print('random forest mse:', mse(origin_random_forest, X_test, y_test))
-    select_random_forest, new_X_train_random_forest, new_X_validate_random_forest = feature_selection('random forest', origin_random_forest, X_train, y_train, X_validate, y_validate)
-    print('random forest after feature selection:', mse(select_random_forest, X_test.loc[:, new_X_train_random_forest.columns], y_test))
+    select_random_forest, new_X_train_random_forest, new_X_validate_random_forest = feature_selection('random forest',
+                                                                                                      origin_random_forest,
+                                                                                                      X_train, y_train,
+                                                                                                      X_validate,
+                                                                                                      y_validate)
+    print('random forest after feature selection:',
+          mse(select_random_forest, X_test.loc[:, new_X_train_random_forest.columns], y_test))
     print('new_features:', new_X_train_random_forest.columns)
     # boosting
     origin_boosting = boosting(X_train, y_train, 169)
     print('boosting mse:', mse(origin_boosting, X_test, y_test))
-    select_boosting, new_X_train_boosting, new_X_validate_boosting = feature_selection('boosting', origin_boosting, X_train, y_train, X_validate, y_validate)
-    print('boosting after feature selection:', mse(select_boosting, X_test.loc[:, new_X_train_boosting.columns], y_test))
+    select_boosting, new_X_train_boosting, new_X_validate_boosting = feature_selection('boosting', origin_boosting,
+                                                                                       X_train, y_train, X_validate,
+                                                                                       y_validate)
+    print('boosting after feature selection:',
+          mse(select_boosting, X_test.loc[:, new_X_train_boosting.columns], y_test))
     print('new_features:', new_X_train_boosting.columns)
     '''
     tree mse: 0.18073499662845582
@@ -174,6 +186,7 @@ new_features: Index(['actor_rating', 'director_rating', 'genre_rating', 'region_
       dtype='object')
     '''
 
+
 def main(X_train, y_train, X_validate, y_validate, X_test, y_test):
     X_train_tree = X_train.iloc[:, X_train.columns != 'genre_rating']
     X_validate_tree = X_validate.iloc[:, X_validate.columns != 'genre_rating']
@@ -191,13 +204,13 @@ def main(X_train, y_train, X_validate, y_validate, X_test, y_test):
     plt.ylabel("rating")
     plt.legend(("ground truth", "prediction"))
     plt.savefig("tree.png")
-    plt.show() 
+    plt.show()
 
     # random_forest_model = random_forest(X_train, y_train, 159)
     random_forest_model = find_random_forest(X_train, y_train, X_validate, y_validate)
     random_forest_pred = random_forest_model.predict(X_test)
     print('random forest mse:', mse(random_forest_model, X_test, y_test))
-    
+
     N = [i for i in range(len(y_test))]
     plt.plot(N, y_test, 'r')
     plt.scatter(N, random_forest_pred, s=1)
@@ -206,7 +219,7 @@ def main(X_train, y_train, X_validate, y_validate, X_test, y_test):
     plt.ylabel("rating")
     plt.legend(("ground truth", "prediction"))
     plt.savefig("random_forest.png")
-    plt.show() 
+    plt.show()
 
     # boosting_model = boosting(X_train, y_train, 169)
     boosting_model = find_boosting(X_train, y_train, X_validate, y_validate)
@@ -221,6 +234,7 @@ def main(X_train, y_train, X_validate, y_validate, X_test, y_test):
     plt.ylabel("rating")
     plt.legend(("ground truth", "prediction"))
     plt.savefig("boosting.png")
-    plt.show() 
+    plt.show()
+
 
 main(X_train, y_train, X_validate, y_validate, X_test, y_test)
