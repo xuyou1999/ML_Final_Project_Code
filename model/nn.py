@@ -82,7 +82,7 @@ plt.ioff()
 plt.show()
 
 print("final normalized prediction:", prediction)
-print("final mse:", loss)
+print("final mse:", loss)  # 0.0531
 
 X_test_tensor = torch.tensor(X_test.values).float()
 y_test_tensor = torch.tensor(y_test.values).float()
