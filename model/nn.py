@@ -23,17 +23,14 @@ X_train_tensor = torch.tensor(X_train.values).float()
 y_train_tensor = torch.tensor(y_train.values).float()
 y_train_tensor = torch.reshape(y_train_tensor, (y_train.shape[0],1))
 
-print(X_train_tensor.size())
-print(y_train_tensor.size())
+print(X_train_tensor)
+print(y_train_tensor)
 
 class Net(nn.Module):
     def __init__(self, n_input, n_hidden, n_output):
         super(Net, self).__init__()
         self.hidden1 = nn.Linear(n_input, n_hidden)
-        # self.hidden2 = nn.Linear(n_hidden, n_hidden)
-        # self.hidden3 = nn.Linear(n_hidden, n_hidden)
-        # self.hidden4 = nn.Linear(n_hidden, n_hidden)
-        # self.hidden5 = nn.Linear(n_hidden, n_hidden)
+        self.hidden2 = nn.Linear(n_hidden, n_hidden)
         self.predict = nn.Linear(n_hidden, n_output)
 
     def forward(self, data):
@@ -41,22 +38,17 @@ class Net(nn.Module):
         out = F.relu(out)
         # out = self.hidden2(out)
         # out = F.relu(out)
-        # out = self.hidden3(out)
-        # out = F.relu(out)
-        # out = self.hidden4(out)
-        # out = F.relu(out)
-        # out = self.hidden5(out)
-        # out = F.relu(out)
         out = self.predict(out)
         return out
 
 
-net = Net(7, 1, 1)
+net = Net(7, 5, 1)
+print(net)
 
-optimizer = torch.optim.SGD(net.parameters(), lr=0.1)
+optimizer = torch.optim.SGD(net.parameters(), lr=0.0001)
 loss_func = torch.nn.MSELoss()
 
-for t in range(500):
+for t in range(50000):
     prediction = net(X_train_tensor)
     loss = loss_func(prediction, y_train_tensor)
 
@@ -64,19 +56,20 @@ for t in range(500):
     loss.backward()
     optimizer.step()
 
-#     if t%5 ==0:
-#         plt.cla()
-#         plt.scatter(X_train.iloc[:, 1].to_numpy(), y_train.to_numpy())
-#         plt.plot(X_train.iloc[:, 1].to_numpy(), prediction.data.numpy(), 'r-', lw=5)
-#         plt.text(0.5, 0, 'Loss = %.4f' % loss.data, fontdict={'size': 20, 'color': 'red'})
-#         plt.pause(0.05)
+    if t%5 ==0:
+        plt.cla()
+        plt.scatter(X_train.iloc[:, 1].to_numpy(), y_train.to_numpy())
+        plt.plot(X_train.iloc[:, 1].to_numpy(), prediction.data.numpy(), 'r-', lw=5)
+        plt.text(0.5, 0, 'Loss = %.4f' % loss.data, fontdict={'size': 20, 'color': 'red'})
+        plt.pause(0.05)
 
-# plt.ioff()
-# plt.show()
+plt.ioff()
+plt.show()
 
 X_test_tensor = torch.tensor(X_test.values).float()
 y_test_tensor = torch.tensor(y_test.values).float()
 y_test_tensor = torch.reshape(y_test_tensor, (y_test.shape[0],1))
+
 pred = net(X_test_tensor)
 print(pred)
 print(loss_func(pred, y_test_tensor))
