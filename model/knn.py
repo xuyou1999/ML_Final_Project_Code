@@ -90,24 +90,7 @@ test_score = knn.score(X_test, pred)
 print("Test MSE: %f" % test_MSE)
 print("Test Score: %f" % test_score)
 
-'''
 # plot
-pred_arg = pred.argsort()
-pred.sort()
-truth = y_test.values
-truth = [truth[arg] for arg in pred_arg]
-N = [i for i in range(len(y_test))]
-plt.plot(N, pred, 'r')
-plt.scatter(N, truth, s=1)
-plt.title("Model: KNN")
-plt.xlabel("movie")
-plt.ylabel("rating")
-plt.legend(("prediction", "ground truth"))
-plt.savefig("knn.png", dpi=420)
-plt.show()
-'''
-
-# plot 2
 truth = y_test.values
 truth_arg = truth.argsort()
 truth.sort()
