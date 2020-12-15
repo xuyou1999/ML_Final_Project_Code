@@ -34,17 +34,28 @@ def find_random_forest(X_train, y_train, X_validate, y_validate):
     # Random forest by setting the number of trees using val set, max_features is by default as sqrt
     opt_estimators = 1
     opt_error = 100
-    for i in range(1, 200):
+    iter_lst = [i for i in range(1, 201)]
+    error_lst = []
+    for i in range(1, 201):
         model_random_forest = RandomForestRegressor(random_state=1, n_estimators=i)
         model_random_forest.fit(X_train, y_train)
         y_pred_random_forest = model_random_forest.predict(X_validate)
         error = mean_squared_error(y_validate, y_pred_random_forest)
+        error_lst.append(error)
         if error < opt_error:
             opt_error = error
             opt_estimators = i
     #     print('Random forest error:', error)
     # print(opt_error)  # 0.09151789030831993
     # print(opt_estimators)  # 159
+
+    plt.plot(iter_lst, error_lst, 'r')
+    plt.title("Random Forest estimators")
+    plt.xlabel("Number of esitimators")
+    plt.ylabel("MSE")
+    plt.savefig("random_forest_n_est.png")
+    plt.show() 
+
     return random_forest(X_train, y_train, opt_estimators)
 
 
@@ -58,17 +69,28 @@ def find_boosting(X_train, y_train, X_validate, y_validate):
     # boosting
     opt_estimators = 1
     opt_error = 100
-    for i in range(1, 200):
+    iter_lst = [i for i in range(1, 201)]
+    error_lst = []
+    for i in range(1, 201):
         model_grad_boost = GradientBoostingRegressor(loss='ls', random_state=1, n_estimators=i)
         model_grad_boost.fit(X_train, y_train)
         y_pred_grad_boost = model_grad_boost.predict(X_validate)
         error = mean_squared_error(y_validate, y_pred_grad_boost)
+        error_lst.append(error)
         if error < opt_error:
             opt_error = error
             opt_estimators = i
     #     print('Gradient boosting error:', error)
     # print(opt_error)  # 0.0943017905460884
     # print(opt_estimators)  # 169
+
+    plt.plot(iter_lst, error_lst, 'r')
+    plt.title("Boosting estimators")
+    plt.xlabel("Number of esitimators")
+    plt.ylabel("MSE")
+    plt.savefig("boosting_n_est.png")
+    plt.show() 
+
     return boosting(X_train, y_train, opt_estimators)
 
 
@@ -171,7 +193,8 @@ def main(X_train, y_train, X_validate, y_validate, X_test, y_test):
     plt.savefig("tree.png")
     plt.show() 
 
-    random_forest_model = random_forest(X_train, y_train, 159)
+    # random_forest_model = random_forest(X_train, y_train, 159)
+    random_forest_model = find_random_forest(X_train, y_train, X_validate, y_validate)
     random_forest_pred = random_forest_model.predict(X_test)
     print('random forest mse:', mse(random_forest_model, X_test, y_test))
     
@@ -185,7 +208,8 @@ def main(X_train, y_train, X_validate, y_validate, X_test, y_test):
     plt.savefig("random_forest.png")
     plt.show() 
 
-    boosting_model = boosting(X_train, y_train, 169)
+    # boosting_model = boosting(X_train, y_train, 169)
+    boosting_model = find_boosting(X_train, y_train, X_validate, y_validate)
     boosting_pred = boosting_model.predict(X_test)
     print('boosting error:', mse(boosting_model, X_test, y_test))
 
