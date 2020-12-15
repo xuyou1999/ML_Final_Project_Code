@@ -1,9 +1,11 @@
 import os
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
 
 # configure work directory
 abs_path = os.path.abspath(__file__)
@@ -105,7 +107,7 @@ class Net(nn.Module):
         return out
 
 
-# train
+# train model
 epoch, learning_rate = 5000, 0.05
 net = Net(D_in, H, D_out)
 optimizer = torch.optim.SGD(net.parameters(), lr=learning_rate)
@@ -119,7 +121,7 @@ for t in range(epoch):
     loss.backward(retain_graph=True)
     optimizer.step()
 
-# test
+# test with test set
 pred = net(X_in_test)
 loss = loss_func(pred, y_in_test)
 print("standardized test prediction:", pred)
@@ -127,8 +129,23 @@ print("standardized test mse:", loss)
 
 pred = pred.detach().numpy()  # convert to numpy (de_standardize() takes numpy as argument)
 y_pred = de_standardize(pred, y_test_mu, y_test_sigma)
-y_pred = torch.from_numpy(y_pred)  # convert to tensor (loss_func() takes tensor as argument)
-y_test = torch.from_numpy(y_test)  # convert to tensor
-print("real test prediction:", y_pred)
-print("ground truth:", y_test)
-print("real test mse:", loss_func(y_pred, y_test))  # 3.2920
+y_pred_tensor = torch.from_numpy(y_pred)  # convert to tensor (loss_func() takes tensor as argument)
+y_test_tensor = torch.from_numpy(y_test)  # convert to tensor
+print("real test prediction:", y_pred_tensor)
+print("ground truth:", y_test_tensor)
+print("real test mse:", loss_func(y_pred_tensor, y_test_tensor))  # 3.3533
+
+# plot
+truth = y_test
+truth_arg = truth.argsort()
+truth.sort()
+y_pred = [y_pred[arg] for arg in truth_arg]
+N = [i for i in range(len(y_test))]
+plt.scatter(N, y_pred, s=1)
+plt.plot(N, truth, 'r')
+plt.title("Model: Neural Network")
+plt.xlabel("movie")
+plt.ylabel("rating")
+plt.legend(("ground truth", "prediction"))
+plt.savefig("neural network.png", dpi=400)
+plt.show()
