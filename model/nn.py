@@ -24,14 +24,15 @@ X_train_tensor = torch.tensor(X_train.values).float()
 y_train_tensor = torch.tensor(y_train.values).float()
 y_train_tensor = torch.reshape(y_train_tensor, (y_train.shape[0], 1))
 
+# dimensions
 batch_size = len(X_train)
 num_features = 7
 num_output = 1
 num_hidden = 10
-# dimensions
 B, D_in, H, D_out = batch_size, num_features, num_hidden, num_output
-m = torch.nn.BatchNorm1d(num_features, affine=True)
-n = torch.nn.BatchNorm1d(num_output, affine=True)
+
+m = torch.nn.BatchNorm1d(D_in, affine=True)
+n = torch.nn.BatchNorm1d(D_out, affine=True)
 X_train_tensor = m(X_train_tensor)
 y_train_tensor = n(y_train_tensor)
 
