@@ -11,10 +11,10 @@ path = os.path.dirname(abs_path)
 os.chdir(path)
 
 # configure device, dtype
-device = torch.device("cuda:0")
-# device = torch.device("cpu")
+device = torch.device("cuda:0")  # device = torch.device("cpu")
 dtype = torch.float32
 
+# read data
 train = pd.read_csv("../data/train_data.csv")
 validate = pd.read_csv("../data/validate_data.csv")
 test = pd.read_csv("../data/test_data.csv")
