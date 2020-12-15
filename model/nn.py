@@ -9,6 +9,7 @@ abs_path = os.path.abspath(__file__)
 path = os.path.dirname(abs_path)
 os.chdir(path)
 
+# device = torch.device("cuda:0")
 device = torch.device("cpu")
 
 train = pd.read_csv("../data/train_data.csv")
