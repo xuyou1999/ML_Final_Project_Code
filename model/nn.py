@@ -46,12 +46,21 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.hidden1 = nn.Linear(n_input, n_hidden)
         self.hidden2 = nn.Linear(n_hidden, n_hidden)
+        self.hidden3 = nn.Linear(n_hidden, n_hidden)
+        self.hidden4 = nn.Linear(n_hidden, n_hidden)
+        self.hidden5 = nn.Linear(n_hidden, n_hidden)
         self.predict = nn.Linear(n_hidden, n_output)
 
     def forward(self, data):
         out = self.hidden1(data)
         out = F.relu(out)
         out = self.hidden2(out)
+        out = F.relu(out)
+        out = self.hidden3(out)
+        out = F.relu(out)
+        out = self.hidden4(out)
+        out = F.relu(out)
+        out = self.hidden5(out)
         out = F.relu(out)
         out = self.predict(out)
         return out
