@@ -1,6 +1,11 @@
+import os
 import torch
 import matplotlib.pyplot as plt
 import pandas as pd
+
+abs_path = os.path.abspath(__file__)
+path = os.path.dirname(abs_path)
+os.chdir(path)
 
 dtype = torch.float32
 # device = torch.device("cpu")
