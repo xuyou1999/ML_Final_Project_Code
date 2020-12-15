@@ -5,6 +5,7 @@ import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from sklearn.metrics import mean_squared_error
 
 
 # configure work directory
@@ -90,6 +91,11 @@ class Net(nn.Module):
         self.hidden3 = nn.Linear(n_hidden, n_hidden)
         self.hidden4 = nn.Linear(n_hidden, n_hidden)
         self.hidden5 = nn.Linear(n_hidden, n_hidden)
+        self.hidden6 = nn.Linear(n_hidden, n_hidden)
+        self.hidden7 = nn.Linear(n_hidden, n_hidden)
+        self.hidden8 = nn.Linear(n_hidden, n_hidden)
+        self.hidden9 = nn.Linear(n_hidden, n_hidden)
+        self.hidden10 = nn.Linear(n_hidden, n_hidden)
         self.predict = nn.Linear(n_hidden, n_output)
 
     def forward(self, data):
@@ -102,6 +108,16 @@ class Net(nn.Module):
         out = self.hidden4(out)
         out = F.relu(out)
         out = self.hidden5(out)
+        out = F.relu(out)
+        out = self.hidden6(out)
+        out = F.relu(out)
+        out = self.hidden7(out)
+        out = F.relu(out)
+        out = self.hidden8(out)
+        out = F.relu(out)
+        out = self.hidden9(out)
+        out = F.relu(out)
+        out = self.hidden10(out)
         out = F.relu(out)
         out = self.predict(out)
         return out
@@ -133,7 +149,7 @@ y_pred_tensor = torch.from_numpy(y_pred)  # convert to tensor (loss_func() takes
 y_test_tensor = torch.from_numpy(y_test)  # convert to tensor
 print("real test prediction:", y_pred_tensor)
 print("ground truth:", y_test_tensor)
-print("real test mse:", loss_func(y_pred_tensor, y_test_tensor))  # 3.3533
+print("real test mse:", mean_squared_error(y_pred, y_test))  # 0.1115
 
 # plot
 truth = y_test
