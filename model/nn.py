@@ -29,7 +29,7 @@ y_train_tensor = torch.reshape(y_train_tensor, (y_train.shape[0], 1))
 batch_size = len(X_train)
 num_features = 7
 num_output = 1
-num_hidden = 10
+num_hidden = 100
 B, D_in, H, D_out = batch_size, num_features, num_hidden, num_output
 
 m = torch.nn.BatchNorm1d(D_in, affine=True)
@@ -72,6 +72,7 @@ for t in range(epoch):
 
     if t % 5 == 0:  # plot every 5 epochs
         plt.cla()
+        # only one attribute
         plt.scatter(X_train_tensor[:, 1].detach().numpy(), y_train_tensor.detach().numpy())
         plt.scatter(X_train_tensor[:, 1].detach().numpy(), prediction.data.numpy())
         plt.text(0.5, 0, 'Loss = %.4f' % loss.data, fontdict={'size': 20, 'color': 'red'})
@@ -79,6 +80,9 @@ for t in range(epoch):
 
 plt.ioff()
 plt.show()
+
+print("final normalized prediction:", prediction)
+print("final mse:", loss)
 
 X_test_tensor = torch.tensor(X_test.values).float()
 y_test_tensor = torch.tensor(y_test.values).float()
@@ -88,5 +92,5 @@ X_test_tensor = m(X_test_tensor)
 y_test_tensor = n(y_test_tensor)
 
 pred = net(X_test_tensor)
-print(pred)
-print(loss_func(pred, y_test_tensor))  # 0.0623
+print("normalized test prediction:", pred)
+print(loss_func(pred, y_test_tensor))  # 0.0598
