@@ -23,6 +23,15 @@ X_train_tensor = torch.tensor(X_train.values).float()
 y_train_tensor = torch.tensor(y_train.values).float()
 y_train_tensor = torch.reshape(y_train_tensor, (y_train.shape[0],1))
 
+num_features = 7
+num_output = 1
+# dimensions
+B, D_in, H, D_out = len(X_train), num_features, 3, num_output
+m = torch.nn.BatchNorm1d(num_features, affine=True)
+n = torch.nn.BatchNorm1d(num_output, affine=True)
+X_train_tensor = m(X_train_tensor)
+y_train_tensor = n(y_train_tensor)
+
 print(X_train_tensor)
 print(y_train_tensor)
 
@@ -36,30 +45,30 @@ class Net(nn.Module):
     def forward(self, data):
         out = self.hidden1(data)
         out = F.relu(out)
-        # out = self.hidden2(out)
-        # out = F.relu(out)
+        out = self.hidden2(out)
+        out = F.relu(out)
         out = self.predict(out)
         return out
 
 
-net = Net(7, 5, 1)
+net = Net(7, 4, 1)
 print(net)
 
-optimizer = torch.optim.SGD(net.parameters(), lr=0.0001)
+optimizer = torch.optim.SGD(net.parameters(), lr=0.05)
 loss_func = torch.nn.MSELoss()
 
-for t in range(50000):
+for t in range(5000):
     prediction = net(X_train_tensor)
     loss = loss_func(prediction, y_train_tensor)
 
     optimizer.zero_grad()
-    loss.backward()
+    loss.backward(retain_graph=True)
     optimizer.step()
 
     if t%5 ==0:
         plt.cla()
-        plt.scatter(X_train.iloc[:, 1].to_numpy(), y_train.to_numpy())
-        plt.plot(X_train.iloc[:, 1].to_numpy(), prediction.data.numpy(), 'r-', lw=5)
+        plt.scatter(X_train_tensor[:, 1].detach().numpy(), y_train_tensor.detach().numpy())
+        plt.scatter(X_train_tensor[:, 1].detach().numpy(), prediction.data.numpy())
         plt.text(0.5, 0, 'Loss = %.4f' % loss.data, fontdict={'size': 20, 'color': 'red'})
         plt.pause(0.05)
 
@@ -70,6 +79,9 @@ X_test_tensor = torch.tensor(X_test.values).float()
 y_test_tensor = torch.tensor(y_test.values).float()
 y_test_tensor = torch.reshape(y_test_tensor, (y_test.shape[0],1))
 
+X_test_tensor = m(X_test_tensor)
+y_test_tensor = n(y_test_tensor)
+
 pred = net(X_test_tensor)
 print(pred)
-print(loss_func(pred, y_test_tensor))
+print(loss_func(pred, y_test_tensor)) # 0.0646
