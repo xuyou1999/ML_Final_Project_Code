@@ -19,8 +19,8 @@ X_train, y_train, X_validate, y_validate, X_test, y_test = train.iloc[:, 1:-1], 
                                                            validate.iloc[:, 1:-1], validate.iloc[:, -1], test.iloc[:,
                                                                                                          1:-1], test.iloc[
                                                                                                                 :, -1]
-X = torch.tensor(X_train.values).float()
-y = torch.tensor(y_train.values).float()
+X = torch.tensor(X_train.values, dtype=dtype)
+y = torch.tensor(y_train.values, dtype=dtype)
 y = torch.reshape(y, (y_train.shape[0], 1))
 print("size of X:", X.size())
 print("size of y:", y.size())
@@ -28,15 +28,12 @@ num_features = 7
 num_output = 1
 # dimensions
 B, D_in, H, D_out = len(X_train), num_features, 3, num_output
-m = torch.nn.BatchNorm1d(num_features)
-n = torch.nn.BatchNorm1d(num_output)
+m = torch.nn.BatchNorm1d(num_features, affine=True)
+n = torch.nn.BatchNorm1d(num_output, affine=True)
 X = m(X)
 print("after norm:", X)
 y = n(y)
 print("after norm:", y)
-# data
-#x = torch.randn(B, D_in, device=device, dtype=dtype)
-#y = torch.randn(B, D_out, device=device, dtype=dtype)
 
 # Model parameters are encapsulated inside torch.nn.Linear
 model = torch.nn.Sequential(
@@ -55,7 +52,7 @@ sse = []
 for t in range(epoch):
     # Input data: x, the last dimension of x must be equal to D_in
     y_pred = model(X)
-    print(y_pred)
+    print("prediction at epoch", t, ":", y_pred)
     loss = loss_fn(y_pred, y)
 
     sse.append(loss.item())
@@ -73,4 +70,4 @@ plt.plot(sse)
 plt.xlabel("epoch")
 plt.ylabel("training sse")
 plt.show()
-print(sse[-1])
+print("final sse:", sse[-1])
