@@ -9,8 +9,8 @@ abs_path = os.path.abspath(__file__)
 path = os.path.dirname(abs_path)
 os.chdir(path)
 
-# device = torch.device("cuda:0")
-device = torch.device("cpu")
+device = torch.device("cuda:0")
+# device = torch.device("cpu")
 
 train = pd.read_csv("../data/train_data.csv")
 validate = pd.read_csv("../data/validate_data.csv")
@@ -32,8 +32,8 @@ num_output = 1
 num_hidden = 100
 B, D_in, H, D_out = batch_size, num_features, num_hidden, num_output
 
-m = torch.nn.BatchNorm1d(D_in, affine=True)
-n = torch.nn.BatchNorm1d(D_out, affine=True)
+m = torch.nn.BatchNorm1d(D_in, affine=False)
+n = torch.nn.BatchNorm1d(D_out, affine=False)
 X_train_tensor = m(X_train_tensor)
 y_train_tensor = n(y_train_tensor)
 
@@ -46,21 +46,12 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.hidden1 = nn.Linear(n_input, n_hidden)
         self.hidden2 = nn.Linear(n_hidden, n_hidden)
-        self.hidden3 = nn.Linear(n_hidden, n_hidden)
-        self.hidden4 = nn.Linear(n_hidden, n_hidden)
-        self.hidden5 = nn.Linear(n_hidden, n_hidden)
         self.predict = nn.Linear(n_hidden, n_output)
 
     def forward(self, data):
         out = self.hidden1(data)
         out = F.relu(out)
         out = self.hidden2(out)
-        out = F.relu(out)
-        out = self.hidden3(out)
-        out = F.relu(out)
-        out = self.hidden4(out)
-        out = F.relu(out)
-        out = self.hidden5(out)
         out = F.relu(out)
         out = self.predict(out)
         return out
@@ -99,5 +90,6 @@ X_test_tensor = m(X_test_tensor)
 y_test_tensor = n(y_test_tensor)
 
 pred = net(X_test_tensor)
+loss = loss_func(pred, y_test_tensor)
 print("normalized test prediction:", pred)
-print(loss_func(pred, y_test_tensor))  # 0.0598
+print("test mse:", loss)  # 0.0590
