@@ -79,19 +79,17 @@ for t in range(epoch):
     loss.backward(retain_graph=True)
     optimizer.step()
 
-    if t % 5 == 0:  # plot every 5 epochs
-        plt.cla()
-        # only one attribute
-        plt.scatter(X_train_tensor[:, 1].detach().numpy(), y_train_tensor.detach().numpy())
-        plt.scatter(X_train_tensor[:, 1].detach().numpy(), prediction.data.numpy())
-        plt.text(0.5, 0, 'Loss = %.4f' % loss.data, fontdict={'size': 20, 'color': 'red'})
-        plt.pause(0.05)
+#     if t % 5 == 0:  # plot every 5 epochs
+#         plt.cla()
+#         # only one attribute
+#         plt.scatter(X_train_tensor[:, 1].detach().numpy(), y_train_tensor.detach().numpy())
+#         plt.scatter(X_train_tensor[:, 1].detach().numpy(), prediction.data.numpy())
+#         plt.text(0.5, 0, 'Loss = %.4f' % loss.data, fontdict={'size': 20, 'color': 'red'})
+#         plt.pause(0.05)
 
-plt.ioff()
-plt.show()
+# plt.ioff()
+# plt.show()
 
-print("final normalized prediction:", prediction)
-print("final mse:", loss)  # 0.0531
 
 X_test_tensor = torch.tensor(X_test.values).float()
 y_test_tensor = torch.tensor(y_test.values).float()
