@@ -1,7 +1,8 @@
+import time
+
 from DoubanAPI import DoubanAPI
 from db_class import MyDb
 from logger_class import Logger
-import time
 
 
 def create_db(db):

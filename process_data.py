@@ -1,5 +1,7 @@
-import pandas as pd
 import random
+
+import pandas as pd
+
 
 # load csv files
 actor_empty = pd.read_csv('./data/actor_empty.csv')

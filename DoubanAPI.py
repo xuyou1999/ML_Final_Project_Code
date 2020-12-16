@@ -2,7 +2,6 @@ import json
 import time
 
 from requests_html import HTMLSession
-from fake_useragent import UserAgent
 
 
 class DoubanAPI:
@@ -24,13 +23,13 @@ class DoubanAPI:
     def search(self, id):
         self.id = str(id)
         url = "https://movie.douban.com/subject/" + str(id)
-        ua = UserAgent().random
-        header = {"User-Agent": ua}
+        headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+                                 "Chrome/60.0.3100.0 Safari/537.36"}
         proxies = {
             "http": "http://49.71.141.225:13456"
         }
         try:
-            self.data = self.session.get(url, headers=header).html
+            self.data = self.session.get(url, headers=headers).html
         except Exception as e:
             print(e)
 
