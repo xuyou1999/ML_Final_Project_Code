@@ -27,7 +27,7 @@ class MyDb:
         self.conn.close()
         if exc_tb or exc_type or exc_val:
             print(exc_type, exc_type, exc_val)
-        return True  # do not throw exception if exception occurs in with clause
+        return True  # do not throw exception in with-clause
 
     def connect(self):
         return self.__enter__()
