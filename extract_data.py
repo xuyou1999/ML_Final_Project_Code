@@ -6,10 +6,10 @@ from logger_class import Logger
 
 
 def create_db(db):
-    '''
+    """
     warning: calling this function will automatically drop database "movie_info", unless modify "create_db.sql"
     :param db: MyDb object
-    '''
+    """
     with open('create_db.sql', encoding='utf-8', mode='r') as f:
         sql_list = f.read().split(';')[:-1]
         for x in sql_list:
@@ -22,10 +22,10 @@ def create_db(db):
 
 
 def filter_data(db):
-    '''
+    """
     filter out movie data in database where there is no date for that movie
     :param db: MyDb object
-    '''
+    """
     query = "DELETE FROM `actor_movie` WHERE movie_ID IN (SELECT ID FROM `movie` WHERE date = '')"
     db.execute(query)
     query = "DELETE FROM `director_movie` WHERE movie_ID IN (SELECT ID FROM `movie` WHERE date = '')"
