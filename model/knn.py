@@ -11,7 +11,7 @@ test = pd.read_csv("../data/test_data.csv")
 X_train, y_train, X_validate, y_validate, X_test, y_test = train.iloc[:, 1:-1], train.iloc[:, -1], \
                                 validate.iloc[:, 1:-1], validate.iloc[:, -1], test.iloc[:, 1:-1], test.iloc[:, -1]
 
-
+# train model
 k_list = [i for i in range(1, 100)]
 mse_list = []
 for k in k_list:
