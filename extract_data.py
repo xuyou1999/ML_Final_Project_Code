@@ -11,7 +11,7 @@ def create_db(db):
 
     :param db: MyDb object
     """
-    with open('create_db.sql', encoding='utf-8', mode='r') as f:
+    with open('./sql/create_db.sql', encoding='utf-8', mode='r') as f:
         sql_list = f.read().split(';')[:-1]
         for x in sql_list:
             if '\n' in x:
