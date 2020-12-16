@@ -15,7 +15,7 @@ X_train, y_train, X_validate, y_validate, X_test, y_test = train.iloc[:, 1:-1], 
 k_list = [i for i in range(1, 100)]
 mse_list = []
 for k in k_list:
-    knn = KNeighborsRegressor(k, weights="distance")  # "distance" gives a better performance than "uniform"
+    knn = KNeighborsRegressor(k, weights="distance", n_jobs=-1)  # "distance" performs better than "uniform"
     knn.fit(X_train, y_train)
     y_pred = knn.predict(X_validate)
     MSE = mean_squared_error(y_validate, y_pred)
@@ -23,8 +23,13 @@ for k in k_list:
 min_i = np.array(mse_list).argmin()
 curr_lowest_MSE = mse_list[min_i]
 curr_best_k = k_list[min_i]
-print("Initial MSE: %f" % curr_lowest_MSE)
+print("Initial train MSE: %f" % curr_lowest_MSE)
 print("Initial best k: %d" % curr_best_k)
+knn = KNeighborsRegressor(curr_best_k, weights="distance", n_jobs=-1)
+knn.fit(X_train, y_train)
+pred = knn.predict(X_test)
+test_MSE = mean_squared_error(y_test, pred)
+print("Initial test MSE: %f" % test_MSE)
 
 # feature selection
 removed_index_list = []
@@ -46,7 +51,7 @@ while len(removed_index_list) < feature_num:  # can at most remove all features
         k_list = [n for n in range(1, 100)]
         mse_list = []
         for k in k_list:  # run knn on one possible combination
-            knn = KNeighborsRegressor(k, weights="distance")
+            knn = KNeighborsRegressor(k, weights="distance", n_jobs=-1)
             knn.fit(X_train_i, y_train)
             y_pred = knn.predict(X_validate_i)
             MSE = mean_squared_error(y_validate, y_pred)
@@ -82,7 +87,7 @@ for i in range(1, feature_num + 1):
         loc.append(i)
 X_train = train.iloc[:, loc]
 X_test = test.iloc[:, loc]
-knn = KNeighborsRegressor(curr_best_k)
+knn = KNeighborsRegressor(curr_best_k, weights="distance", n_jobs=-1)
 knn.fit(X_train, y_train)
 pred = knn.predict(X_test)
 test_MSE = mean_squared_error(pred, y_test)
