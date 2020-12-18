@@ -44,7 +44,7 @@ def find_random_forest(X_train, y_train, X_validate, y_validate):
         if error < opt_error:
             opt_error = error
             opt_estimators = i
-    #     print('Random forest error:', error)
+    # print('Random forest error:', error)
     # print(opt_error)  # 0.09151789030831993
     # print(opt_estimators)  # 159
 
@@ -79,7 +79,7 @@ def find_boosting(X_train, y_train, X_validate, y_validate):
         if error < opt_error:
             opt_error = error
             opt_estimators = i
-    #     print('Gradient boosting error:', error)
+    # print('Gradient boosting error:', error)
     # print(opt_error)  # 0.0943017905460884
     # print(opt_estimators)  # 169
 
@@ -136,6 +136,7 @@ def feature_selection(method_name, current_model, X_train, y_train, X_validate, 
     if opt_mse == origin_mse:
         return origin_model, X_train, X_validate
     else:
+        # noinspection PyUnboundLocalVariable
         return feature_selection(method_name, opt_model, new_X_train, y_train, new_X_validate, y_validate)
 
 

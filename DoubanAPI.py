@@ -16,8 +16,8 @@ class DoubanAPI:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.session.close()
-        if exc_tb or exc_type or exc_val:
-            print(exc_type, exc_type, exc_val)
+        if exc_type or exc_val or exc_tb:
+            print(exc_type, exc_val, exc_tb)
         return True  # do not throw exception in with-clause
 
     # noinspection PyUnresolvedReferences
