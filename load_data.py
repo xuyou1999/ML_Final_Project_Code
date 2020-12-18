@@ -1,6 +1,13 @@
+import os
+
 from db_class import MyDb
 from logger_class import Logger
 from extract_data import filter_data
+
+
+def make_dir():
+    if not os.path.exists("./data"):
+        os.mkdir("./data")
 
 
 def get_movie(db):
@@ -97,6 +104,7 @@ def region_info(db):
 
 if __name__ == '__main__':
     logger = Logger("file").getLogger()
+    make_dir()
     with MyDb("localhost", "root", "", 3306, "movie_info") as db:
         filter_data(db)
         try:
