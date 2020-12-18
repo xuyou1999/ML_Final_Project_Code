@@ -1,3 +1,8 @@
+'''
+Works Cited
+豆瓣电影. https://movie.douban.com/. Accessed Dec. 2020.
+'''
+
 from DoubanAPI import DoubanAPI
 from logger_class import Logger
 

@@ -1,3 +1,8 @@
+'''
+Works Cited
+豆瓣电影. https://movie.douban.com/. Accessed Dec. 2020.
+'''
+
 import os
 
 from db_class import MyDb
