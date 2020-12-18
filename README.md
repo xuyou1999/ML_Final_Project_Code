@@ -24,10 +24,11 @@ tree.py: decision tree, random forest, and boosting tree model
 
 linear/ridge regression.py: linear and ridge regression model
 ## Directory: ./data
-folder to contain data set
+folder to contain data sets
 ## Directory: ./log
 folder to contain log files
-
+## Directory: ./sql
+create_db.sql: sql queries (MySQL style) to create database for this project
 ## Note:
 1. The number of lines in "..._pred_avg.csv" and "..._empty.csv" should add up to the number of movies/sample size.
 2. Samples and data sets already attached in data folder.
