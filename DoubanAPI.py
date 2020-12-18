@@ -20,6 +20,7 @@ class DoubanAPI:
             print(exc_type, exc_type, exc_val)
         return True  # do not throw exception in with-clause
 
+    # noinspection PyUnresolvedReferences
     def search(self, id):
         self.id = str(id)
         url = "https://movie.douban.com/subject/" + str(id)
@@ -49,6 +50,7 @@ class DoubanAPI:
         screenwriter_index = 1
         actor_index = 2
         try:
+            # noinspection PyStatementEffect
             info_dict["导演"]
             director = attr_list[director_index]
             director_attr = director.find("a")
@@ -59,6 +61,7 @@ class DoubanAPI:
             screenwriter_index -= 1
             actor_index -= 1
         try:
+            # noinspection PyStatementEffect
             info_dict["编剧"]
             screenwriter = attr_list[screenwriter_index]
             screenwriter_attr = screenwriter.find("a")
@@ -68,6 +71,7 @@ class DoubanAPI:
             screenwriter_id = []
             actor_index -= 1
         try:
+            # noinspection PyStatementEffect
             info_dict["主演"]
             actor = attr_list[actor_index]
             actor_attr = actor.find("a")
