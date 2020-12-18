@@ -1,4 +1,4 @@
-# ML_Final_Project_Code
+# Machine Learning Final Project
 ## Directory: .
 db_class.py: class MyDb, can be used to fetch data from database
 
@@ -34,3 +34,4 @@ folder to contain log files
 3. Please configure work directory to "./" to run.
 4. Please set valid IP proxies in DoubanAPI.py; otherwise will suffer temporary IP ban.
 5. Default device in Pytorch is set to GPU (with cuda cores).
+## Credits:
