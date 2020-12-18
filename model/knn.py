@@ -1,8 +1,8 @@
-from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.neighbors import KNeighborsRegressor
+from matplotlib import pyplot as plt
 from sklearn.metrics import mean_squared_error
+from sklearn.neighbors import KNeighborsRegressor
 
 train = pd.read_csv("../data/train_data.csv")
 validate = pd.read_csv("../data/validate_data.csv")

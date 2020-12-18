@@ -1,12 +1,11 @@
 import os
 
 import pandas as pd
-from sklearn import tree
-from sklearn.ensemble import BaggingRegressor
-from sklearn.metrics import mean_squared_error
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.ensemble import GradientBoostingRegressor
 from matplotlib import pyplot as plt
+from sklearn import tree
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
 
 abs_path = os.path.abspath(__file__)
 path = os.path.dirname(abs_path)

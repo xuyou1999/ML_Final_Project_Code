@@ -8,7 +8,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from sklearn.metrics import mean_squared_error
 
-
 # configure work directory
 abs_path = os.path.abspath(__file__)
 path = os.path.dirname(abs_path)

@@ -1,5 +1,6 @@
-from DoubanAPI import DoubanAPI
 import pandas as pd
+
+from DoubanAPI import DoubanAPI
 
 if __name__ == '__main__':
     columns = ("director", "screenwriter", "actor", "genre", "region", "language", "date",

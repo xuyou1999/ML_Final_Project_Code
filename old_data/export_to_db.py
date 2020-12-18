@@ -5,7 +5,6 @@ import pymysql
 from DoubanAPI import DoubanAPI
 from logger_class import Logger
 
-
 # load movie id from file
 file = open("movie.txt", "r")
 

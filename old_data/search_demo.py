@@ -1,6 +1,7 @@
 import asyncio
-from pyppeteer import launch
+
 from lxml import etree
+from pyppeteer import launch
 
 key_word = "indo"
 opt = {

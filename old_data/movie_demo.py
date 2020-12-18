@@ -1,7 +1,7 @@
 import json
-import time
-from requests import Session
 import os
+
+from requests import Session
 
 abs_path = os.path.abspath(__file__)
 path = os.path.dirname(abs_path)

@@ -1,4 +1,5 @@
 import pymysql
+
 from DoubanAPI import DoubanAPI
 
 conn = pymysql.connect(host="localhost", user="root", password="", port=3306, database="movie_info", charset="utf8")

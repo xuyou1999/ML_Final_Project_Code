@@ -1,5 +1,6 @@
 import pymysql
 from pymysql.cursors import *
+
 from logger_class import Logger
 
 logger = Logger("file").getLogger()
