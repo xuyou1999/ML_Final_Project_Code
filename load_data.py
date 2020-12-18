@@ -1,6 +1,6 @@
 from db_class import MyDb
-from logger_class import Logger
 from extract_data import filter_data
+from logger_class import Logger
 
 
 def get_movie(db):

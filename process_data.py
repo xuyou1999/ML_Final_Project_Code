@@ -2,7 +2,6 @@ import random
 
 import pandas as pd
 
-
 # load csv files
 actor_empty = pd.read_csv('./data/actor_empty.csv')
 actor_pred_avg = pd.read_csv('./data/actor_pred_avg.csv')
